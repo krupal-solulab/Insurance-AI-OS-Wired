@@ -1,0 +1,344 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-2: var(--primary-2);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent-amber: var(--accent-amber);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+:root {
+  --radius: 0.9rem;
+  /* Insurance AI OS light theme: clean white surfaces, deep-navy text, brand-blue accent. */
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.24 0.03 255);
+  --surface: oklch(1 0 0);
+  --surface-2: oklch(0.975 0.006 255);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.24 0.03 255);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.24 0.03 255);
+  --primary: oklch(0.55 0.17 258); /* brand blue */
+  --primary-2: oklch(0.42 0.13 262); /* deeper navy-blue for gradient fills */
+  --primary-foreground: oklch(0.99 0 0);
+  --accent-amber: oklch(0.82 0.16 88); /* amber highlight */
+  --secondary: oklch(0.965 0.006 255);
+  --secondary-foreground: oklch(0.32 0.03 255);
+  --muted: oklch(0.965 0.006 255);
+  --muted-foreground: oklch(0.52 0.02 255);
+  --accent: oklch(0.95 0.03 258);
+  --accent-foreground: oklch(0.45 0.14 258);
+  --destructive: oklch(0.58 0.2 27);
+  --border: oklch(0.91 0.008 255);
+  --input: oklch(0.91 0.008 255);
+  --ring: oklch(0.55 0.17 258);
+  --grid-line: oklch(0.24 0.03 255 / 0.045);
+}
+
+/* Dark variant for the marketing landing page. Scoped to `.landing-root` so it
+   redefines the same tokens the light `:root` sets, with higher specificity. */
+.landing-root.dark,
+html.dark .landing-root {
+  /* Dark navy (#0B1F3A family) with bright brand-blue accent. */
+  --background: oklch(0.22 0.042 258);
+  --foreground: oklch(0.96 0.008 255);
+  --surface: oklch(0.27 0.046 258);
+  --surface-2: oklch(0.31 0.05 258);
+  --card: oklch(0.27 0.046 258);
+  --card-foreground: oklch(0.96 0.008 255);
+  --popover: oklch(0.27 0.046 258);
+  --popover-foreground: oklch(0.96 0.008 255);
+  --primary: oklch(0.66 0.16 258);
+  --primary-2: oklch(0.52 0.15 262);
+  --primary-foreground: oklch(0.18 0.03 258);
+  --accent-amber: oklch(0.84 0.16 88);
+  --secondary: oklch(0.33 0.05 258);
+  --secondary-foreground: oklch(0.96 0.008 255);
+  --muted: oklch(0.31 0.05 258);
+  --muted-foreground: oklch(0.74 0.024 255);
+  --accent: oklch(0.36 0.07 258);
+  --accent-foreground: oklch(0.9 0.06 258);
+  --destructive: oklch(0.65 0.2 27);
+  --border: oklch(0.37 0.045 258);
+  --input: oklch(0.34 0.05 258);
+  --ring: oklch(0.66 0.16 258);
+  --grid-line: oklch(0.96 0.008 255 / 0.06);
+  color: var(--foreground);
+  background-color: var(--background);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  html,
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-display);
+    -webkit-font-smoothing: antialiased;
+  }
+  .font-mono {
+    font-family: var(--font-mono);
+  }
+}
+
+/* Rich blue gradient fill for primary CTAs and feature surfaces. */
+@utility brand-gradient {
+  background-image: linear-gradient(135deg, var(--primary) 0%, var(--primary-2) 100%);
+}
+
+@utility grid-bg {
+  background-image:
+    linear-gradient(var(--grid-line, oklch(0.2 0.01 275 / 0.045)) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line, oklch(0.2 0.01 275 / 0.045)) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+/* =============================================================================
+   Enterprise app shell theme (Copilot / Dynamics / ServiceNow feel).
+   Scoped to `.app-shell` so the marketing landing page keeps its graphite look.
+   Neutral slate surfaces + a professional blue accent. Light is the default;
+   `.app-shell.dark` supplies the dark variant. Because these redefine the same
+   CSS variables the design tokens reference, every `bg-background`,
+   `text-foreground`, `bg-primary`, etc. inside the shell picks them up.
+   ========================================================================== */
+.app-shell {
+  /* Light */
+  --background: oklch(0.985 0.002 260);
+  --foreground: oklch(0.24 0.012 260);
+  --surface: oklch(1 0 0);
+  --surface-2: oklch(0.965 0.004 260);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.24 0.012 260);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.24 0.012 260);
+  --primary: oklch(0.55 0.17 258); /* brand blue (matches marketing) */
+  --primary-2: oklch(0.42 0.13 262);
+  --primary-foreground: oklch(0.99 0 0);
+  --accent-amber: oklch(0.82 0.16 88);
+  --secondary: oklch(0.965 0.006 258);
+  --secondary-foreground: oklch(0.32 0.03 258);
+  --muted: oklch(0.965 0.006 258);
+  --muted-foreground: oklch(0.5 0.02 258);
+  --accent: oklch(0.95 0.03 258);
+  --accent-foreground: oklch(0.45 0.14 258);
+  --destructive: oklch(0.58 0.2 27);
+  --border: oklch(0.91 0.008 258);
+  --input: oklch(0.91 0.008 258);
+  --ring: oklch(0.55 0.17 258);
+  color: var(--foreground);
+  background-color: var(--background);
+}
+
+.app-shell.dark,
+html.dark .app-shell {
+  /* Dark navy (matches marketing), bright brand-blue accent. */
+  --background: oklch(0.21 0.038 258);
+  --foreground: oklch(0.96 0.008 258);
+  --surface: oklch(0.26 0.044 258);
+  --surface-2: oklch(0.3 0.048 258);
+  --card: oklch(0.26 0.044 258);
+  --card-foreground: oklch(0.96 0.008 258);
+  --popover: oklch(0.26 0.044 258);
+  --popover-foreground: oklch(0.96 0.008 258);
+  --primary: oklch(0.66 0.16 258);
+  --primary-2: oklch(0.52 0.15 262);
+  --primary-foreground: oklch(0.18 0.03 258);
+  --accent-amber: oklch(0.84 0.16 88);
+  --secondary: oklch(0.32 0.048 258);
+  --secondary-foreground: oklch(0.96 0.008 258);
+  --muted: oklch(0.3 0.048 258);
+  --muted-foreground: oklch(0.74 0.024 258);
+  --accent: oklch(0.36 0.07 258);
+  --accent-foreground: oklch(0.9 0.06 258);
+  --destructive: oklch(0.65 0.2 27);
+  --border: oklch(0.36 0.044 258);
+  --input: oklch(0.34 0.048 258);
+  --ring: oklch(0.66 0.16 258);
+}
+
+/* Inside the shell, use the clean system UI font, not the display font. */
+.app-shell,
+.app-shell input,
+.app-shell button,
+.app-shell select,
+.app-shell textarea {
+  font-family: ui-sans-serif, system-ui, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Hide the scrollbar entirely while keeping the element scrollable. */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Themed thin scrollbar — used on scrollable modals/panels so the native
+   scrollbar blends with the surface instead of showing the OS default. */
+.nice-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.nice-scroll::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+.nice-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.nice-scroll::-webkit-scrollbar-thumb {
+  background-color: var(--border);
+  border: 3px solid transparent;
+  background-clip: content-box;
+  border-radius: 9999px;
+}
+.nice-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: var(--muted-foreground);
+  background-clip: content-box;
+}
+.nice-scroll::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Scroll-reveal for marketing sections (used by the Workflow example).
+   Elements start slightly down + faded, then ease in when they enter view. */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.reveal.in-view {
+  opacity: 1;
+  transform: none;
+}
+/* Vertical rail that "draws" itself once the timeline is in view. */
+.rail-draw {
+  transform-origin: top;
+  transform: scaleY(0);
+  transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.rail-draw.in-view {
+  transform: scaleY(1);
+}
+@keyframes float-arrow {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(4px);
+  }
+}
+.arrow-float {
+  animation: float-arrow 1.8s ease-in-out infinite;
+}
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateY(3px);
+    opacity: 1;
+  }
+}
+.arrow-bob {
+  animation: bob 1.6s ease-in-out infinite;
+}
+
+/* Animated "data flowing" along the wired flow-diagram connectors. */
+@keyframes wire-flow {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+.wire-flow {
+  stroke-dasharray: 5 7;
+  animation: wire-flow 1s linear infinite;
+}
+/* Soft pulsing halo for the central AI core node. */
+@keyframes core-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 var(--primary);
+    opacity: 0.85;
+  }
+  50% {
+    box-shadow: 0 0 40px -6px var(--primary);
+    opacity: 1;
+  }
+}
+.core-pulse {
+  animation: core-pulse 2.6s ease-in-out infinite;
+}
+/* Scroll-reveal that scales up slightly as it fades in. */
+.reveal-pop {
+  opacity: 0;
+  transform: translateY(14px) scale(0.985);
+  transition:
+    opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.reveal-pop.in-view {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .rail-draw {
+    transform: none;
+    transition: none;
+  }
+  .arrow-float,
+  .arrow-bob,
+  .wire-flow,
+  .core-pulse {
+    animation: none;
+  }
+  .reveal-pop {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
